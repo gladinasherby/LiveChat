@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Chat</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+  <div id="messages"></div>
+  <form id="message-form">
+    <input id="message-input" type="text">
+    <button type="submit">Send</button>
+  </form>
+
+  <script>
+    const socket = io();
+
+    $('#message-form').submit((e) => {
+      e.preventDefault();
+      const msg = $('#message-input').val();
+      socket.emit('chat message', msg);
+      $('#message-input').val('');
+    });
+
+    socket.on('chat message', (msg) => {
+      $('#messages').append($('<p>').text(msg));
+    });
+  </script>
+</body>
+</html>
